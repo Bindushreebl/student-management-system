@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPulse SMS - Next-Gen Student Management System & Academic Portal</title>
+  <meta name="description" content="A state-of-the-art full-stack Student Management System featuring real-time enrollment analytics, course management, automated GPA calculation, attendance tracking, and SQLite persistence.">
+  <meta name="keywords" content="student management system, school ERP, academic portal, attendance tracker, grade management">
+  <meta name="theme-color" content="#0b0f19">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- ==================== SIDEBAR NAVIGATION ==================== -->
+    <aside class="sidebar" id="app-sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <div class="brand-icon">
+          <!-- Graduation Cap / Academic Crest SVG -->
+          <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v7" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">EduPulse</div>
+          <div class="brand-subtitle">Student Portal</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Main Menu</div>
+
+        <a href="#dashboard" class="nav-link active" data-view-target="dashboard" id="nav-item-dashboard">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span class="nav-text">Dashboard</span>
+        </a>
+
+        <a href="#students" class="nav-link" data-view-target="students" id="nav-item-students">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span class="nav-text">Students Directory</span>
+          <span class="nav-badge" id="nav-students-count">15</span>
+        </a>
+
+        <a href="#courses" class="nav-link" data-view-target="courses" id="nav-item-courses">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <span class="nav-text">Courses & Academics</span>
+        </a>
+
+        <a href="#attendance" class="nav-link" data-view-target="attendance" id="nav-item-attendance">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+          <span class="nav-text">Attendance Tracker</span>
+        </a>
+
+        <div class="nav-section-title">Institutional</div>
+
+        <a href="#announcements" class="nav-link" data-view-target="announcements" id="nav-item-announcements">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+          </svg>
+          <span class="nav-text">Campus Notices</span>
+        </a>
+
+        <a href="#reports" class="nav-link" data-view-target="reports" id="nav-item-reports">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="nav-text">Academic Reports</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status-box">
+          <div>
+            <div class="status-label">Database Engine</div>
+            <div style="font-size: 0.68rem; color: var(--text-dim); font-family: var(--font-mono);">SQLite3 (WAL Active)</div>
+          </div>
+          <div class="status-indicator">
+            <span class="status-dot-pulse"></span>
+            <span>Online</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN APPLICATION CONTENT ==================== -->
+    <div class="main-content">
+
+      <!-- TOP APPLICATION HEADER -->
+      <header class="app-header">
+        <div class="header-left">
+          <button class="header-btn md:hidden" id="mobile-menu-btn" aria-label="Toggle Menu" style="display: none;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          
+          <div class="page-title-group">
+            <div class="page-breadcrumb">
+              <span>EduPulse</span>
+              <span>/</span>
+              <span id="page-breadcrumb-text">Overview</span>
+            </div>
+            <h1 id="page-main-title">Executive Academic Dashboard</h1>
+          </div>
+        </div>
+
+        <div class="header-search">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" id="global-search-input" placeholder="Search students by name, ID, or email..." aria-label="Global Search">
+          <span class="search-shortcut">/</span>
+        </div>
+
+        <div class="header-right">
+          <div class="header-term-pill">
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-cyan);"></span>
+            <span>Fall 2026 Term</span>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="header-btn" id="theme-toggle-btn" aria-label="Toggle Color Theme" title="Toggle Light/Dark Theme">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </button>
+
+          <!-- Reset Demo Database -->
+          <button class="btn btn-secondary btn-sm" id="reset-demo-btn" title="Reset and re-seed database with clean sample data">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Reset Demo
+          </button>
+
+          <!-- Quick Action: Add Student -->
+          <button class="btn btn-primary btn-sm" onclick="StudentsModule.openAddModal()" id="header-add-student-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            New Student
+          </button>
+
+          <!-- User Profile -->
+          <div class="user-profile-pill">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Dean Vance" class="user-avatar" />
+            <div class="user-meta">
+              <span class="user-name">Dean Vance</span>
+              <span class="user-role">Registrar Admin</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE MAIN WRAPPER -->
+      <main class="page-wrapper">
+
+        <!-- ==========================================
+             VIEW 1: DASHBOARD OVERVIEW
+             ========================================== -->
+        <section id="view-dashboard" class="view-section">
+          <!-- KPI Metrics Row -->
+          <div class="kpi-grid">
+            <div class="kpi-card" style="--card-accent: var(--primary);">
+              <div class="kpi-top">
+                <span class="kpi-title">Total Enrolled</span>
+                <div class="kpi-icon-wrapper" style="background: var(--primary-light); color: var(--primary);">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-total-students">15</div>
+              <div class="kpi-subtext">
+                <span class="trend-badge positive">↑ 12%</span>
+                <span>vs previous term</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" style="--card-accent: var(--accent-emerald);">
+              <div class="kpi-top">
+                <span class="kpi-title">Active Roster</span>
+                <div class="kpi-icon-wrapper" style="background: var(--accent-emerald-light); color: var(--accent-emerald);">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-active-students">13</div>
+              <div class="kpi-subtext">
+                <span class="trend-badge positive">93.3%</span>
+                <span>active retention rate</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" style="--card-accent: var(--accent-cyan);">
+              <div class="kpi-top">
+                <span class="kpi-title">Offered Courses</span>
+                <div class="kpi-icon-wrapper" style="background: var(--accent-cyan-light); color: var(--accent-cyan);">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-total-courses">12</div>
+              <div class="kpi-subtext">
+                <span class="trend-badge neutral">6 Majors</span>
+                <span>accredited curriculum</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" style="--card-accent: var(--accent-purple);">
+              <div class="kpi-top">
+                <span class="kpi-title">Institutional GPA</span>
+                <div class="kpi-icon-wrapper" style="background: var(--accent-purple-light); color: var(--accent-purple);">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-avg-gpa">3.70</div>
+              <div class="kpi-subtext">
+                <span class="trend-badge positive">↑ 0.14</span>
+                <span>Dean's List caliber</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" style="--card-accent: var(--accent-amber);">
+              <div class="kpi-top">
+                <span class="kpi-title">Attendance Rate</span>
+                <div class="kpi-icon-wrapper" style="background: var(--accent-amber-light); color: var(--accent-amber);">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-attendance-rate">85%</div>
+              <div class="kpi-subtext">
+                <span class="trend-badge positive">High</span>
+                <span>tracked across all lectures</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <!-- Department Distribution Chart -->
+            <div class="content-card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Department Enrollment & GPA</h3>
+                  <p class="card-subtitle">Distribution of enrolled students per academic school</p>
+                </div>
+              </div>
+              <div class="card-body" id="dept-chart-container">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+
+            <!-- GPA Brackets Breakdown -->
+            <div class="content-card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Academic Standing Distribution</h3>
+                  <p class="card-subtitle">Students categorized by cumulative GPA performance</p>
+                </div>
+              </div>
+              <div class="card-body" id="gpa-chart-container">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom 2-Column Row: Recent Registrations & System Audit Logs -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+            <!-- Recent Students -->
+            <div class="content-card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Recent Student Enrollments</h3>
+                  <p class="card-subtitle">Latest candidate admissions into the university</p>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="App.switchView('students')">View All</button>
+              </div>
+              <div class="card-body" id="dashboard-recent-students">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+
+            <!-- System Activity Audit Logs -->
+            <div class="content-card" style="margin-bottom:0;">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">System Activity Log</h3>
+                  <p class="card-subtitle">Live audit trail of database modifications</p>
+                </div>
+                <span class="badge badge-active">Live Sync</span>
+              </div>
+              <div class="card-body" id="dashboard-audit-logs">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 2: STUDENTS DIRECTORY
+             ========================================== -->
+        <section id="view-students" class="view-section hidden">
+          <!-- Toolbar & Controls -->
+          <div class="toolbar-container">
+            <div class="toolbar-filters">
+              <div class="toolbar-search">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" id="student-search-input" placeholder="Search by name, ID, or email..." aria-label="Search Students">
+              </div>
+
+              <!-- Department Filter -->
+              <select id="filter-dept" aria-label="Filter Department">
+                <option value="">All Departments</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Data Science & AI">Data Science & AI</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Information Technology">Information Technology</option>
+              </select>
+
+              <!-- Semester Filter -->
+              <select id="filter-sem" aria-label="Filter Semester">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+
+              <!-- Status Filter -->
+              <select id="filter-status" aria-label="Filter Status">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Graduated">Graduated</option>
+              </select>
+
+              <!-- Sort Filter -->
+              <select id="filter-sort" aria-label="Sort Order">
+                <option value="id:DESC">Newest First</option>
+                <option value="first_name:ASC">Name (A-Z)</option>
+                <option value="gpa:DESC">Highest GPA</option>
+                <option value="gpa:ASC">Lowest GPA</option>
+                <option value="semester:DESC">Highest Semester</option>
+              </select>
+
+              <button class="btn btn-outline btn-sm" id="reset-filters-btn" title="Reset Filters">
+                Clear Filters
+              </button>
+            </div>
+
+            <div class="toolbar-actions">
+              <!-- View Toggle -->
+              <div class="view-toggle" role="group" aria-label="View toggle">
+                <button id="view-table-btn" class="active" title="Table View" aria-label="Table View">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                  </svg>
+                </button>
+                <button id="view-grid-btn" title="Grid Cards View" aria-label="Grid View">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Export CSV -->
+              <button class="btn btn-secondary btn-sm" id="export-csv-btn">
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Export CSV
+              </button>
+
+              <!-- Add Student -->
+              <button class="btn btn-primary btn-sm" onclick="StudentsModule.openAddModal()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Student
+              </button>
+            </div>
+          </div>
+
+          <!-- Students Display Container (Table or Grid) -->
+          <div id="students-display-container">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 3: COURSES & ACADEMICS
+             ========================================== -->
+        <section id="view-courses" class="view-section hidden">
+          <div class="flex items-center justify-between" style="margin-bottom: 1.5rem;">
+            <div>
+              <h2>Course Catalog & Department Offerings</h2>
+              <p>Explore all available courses, active credit weights, and registered capacities</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="btn btn-secondary btn-sm" onclick="CoursesModule.openEnrollModalForCourse()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                Enroll Student
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="CoursesModule.openAddCourseModal()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Course
+              </button>
+            </div>
+          </div>
+
+          <div id="courses-grid-container">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 4: ATTENDANCE TRACKER
+             ========================================== -->
+        <section id="view-attendance" class="view-section hidden">
+          <div class="content-card">
+            <div class="card-header">
+              <div>
+                <h2>Daily Session Attendance Registry</h2>
+                <p>Record student attendance per course lecture session</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <select id="att-course-select" style="min-width: 250px;" aria-label="Select Course">
+                  <option value="">Select a Course...</option>
+                </select>
+                <input type="date" id="att-date-input" aria-label="Attendance Date" />
+              </div>
+            </div>
+          </div>
+
+          <div id="att-roster-container">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 5: CAMPUS ANNOUNCEMENTS
+             ========================================== -->
+        <section id="view-announcements" class="view-section hidden">
+          <div class="flex items-center justify-between" style="margin-bottom: 1.5rem;">
+            <div>
+              <h2>Institutional Bulletins & Announcements</h2>
+              <p>Official notices for students, faculty, and academic departments</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="AnalyticsModule.openAnnouncementModal()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Post Announcement
+            </button>
+          </div>
+
+          <div id="announcements-feed-container" style="max-width: 900px;">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 6: REPORTS & TRANSCRIPTS
+             ========================================== -->
+        <section id="view-reports" class="view-section hidden">
+          <div class="content-card" style="max-width: 800px; margin: 0 auto;">
+            <div class="card-header">
+              <div>
+                <h2>Generate Official Academic Transcript</h2>
+                <p>Printable report card with course grades, GPA calculations, and credits breakdown</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" for="report-student-select">Select Student for Transcript</label>
+                <select id="report-student-select" style="width: 100%;">
+                  <option value="1">Sophia Chen (STU-2026-001) - Computer Science</option>
+                  <option value="2">Marcus Vance (STU-2026-002) - Data Science & AI</option>
+                  <option value="3">Elena Rostova (STU-2026-003) - Computer Science</option>
+                  <option value="4">Liam O'Connor (STU-2026-004) - Electrical Engineering</option>
+                  <option value="5">Amina Diallo (STU-2026-005) - Business Administration</option>
+                  <option value="8">Tariq Al-Mansoor (STU-2026-008) - Computer Science</option>
+                  <option value="11">Ananya Sharma (STU-2026-011) - Computer Science</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="AnalyticsModule.generateReportCard(document.getElementById('report-student-select').value)">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Generate & Print Official Transcript
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Add Student Modal -->
+  <div class="modal-overlay" id="add-student-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Enroll New Student</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('add-student-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="add-student-form">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="add-fname">First Name <span class="required">*</span></label>
+              <input type="text" id="add-fname" name="first_name" required placeholder="e.g. Alex" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-lname">Last Name <span class="required">*</span></label>
+              <input type="text" id="add-lname" name="last_name" required placeholder="e.g. Mercer" />
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label" for="add-email">University Email <span class="required">*</span></label>
+              <input type="email" id="add-email" name="email" required placeholder="alex.mercer@campus.edu" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-phone">Phone Number</label>
+              <input type="tel" id="add-phone" name="phone" placeholder="+1 (555) 000-0000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-dob">Date of Birth</label>
+              <input type="date" id="add-dob" name="dob" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-gender">Gender</label>
+              <select id="add-gender" name="gender">
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-dept">Department <span class="required">*</span></label>
+              <select id="add-dept" name="department" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Data Science & AI">Data Science & AI</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Information Technology">Information Technology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-sem">Starting Semester</label>
+              <input type="number" id="add-sem" name="semester" min="1" max="8" value="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-gpa">Initial GPA (Optional)</label>
+              <input type="number" id="add-gpa" name="gpa" step="0.01" min="0.0" max="4.0" value="3.50" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('add-student-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Enroll Candidate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Edit Student Modal -->
+  <div class="modal-overlay" id="edit-student-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Student Profile</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('edit-student-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="edit-student-form">
+        <input type="hidden" name="id" />
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="edit-fname">First Name <span class="required">*</span></label>
+              <input type="text" id="edit-fname" name="first_name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-lname">Last Name <span class="required">*</span></label>
+              <input type="text" id="edit-lname" name="last_name" required />
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label" for="edit-email">University Email <span class="required">*</span></label>
+              <input type="email" id="edit-email" name="email" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-phone">Phone Number</label>
+              <input type="tel" id="edit-phone" name="phone" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-dob">Date of Birth</label>
+              <input type="date" id="edit-dob" name="dob" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-gender">Gender</label>
+              <select id="edit-gender" name="gender">
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-dept">Department <span class="required">*</span></label>
+              <select id="edit-dept" name="department" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Data Science & AI">Data Science & AI</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Information Technology">Information Technology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-sem">Current Semester</label>
+              <input type="number" id="edit-sem" name="semester" min="1" max="8" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-status">Enrollment Status</label>
+              <select id="edit-status" name="status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Graduated">Graduated</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-gpa">GPA Score</label>
+              <input type="number" id="edit-gpa" name="gpa" step="0.01" min="0.0" max="4.0" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('edit-student-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Student Profile Details Modal (Large with Tabs) -->
+  <div class="modal-overlay" id="student-profile-modal">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title">Student Profile Dossier</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('student-profile-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="student-profile-body">
+        <!-- Dynamically injected -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="UI.closeModal('student-profile-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Add Course Modal -->
+  <div class="modal-overlay" id="add-course-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Academic Course</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('add-course-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="add-course-form">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="add-course-code">Course Code <span class="required">*</span></label>
+              <input type="text" id="add-course-code" name="course_code" required placeholder="e.g. CS-401" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-course-credits">Credit Hours</label>
+              <input type="number" id="add-course-credits" name="credits" min="1" max="6" value="3" />
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label" for="add-course-name">Course Title <span class="required">*</span></label>
+              <input type="text" id="add-course-name" name="course_name" required placeholder="e.g. Advanced Distributed Systems" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-course-dept">Department <span class="required">*</span></label>
+              <select id="add-course-dept" name="department" required>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Data Science & AI">Data Science & AI</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Business Administration">Business Administration</option>
+                <option value="Information Technology">Information Technology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-course-instructor">Assigned Instructor</label>
+              <input type="text" id="add-course-instructor" name="instructor" placeholder="Dr. Jane Doe" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-course-capacity">Max Seat Capacity</label>
+              <input type="number" id="add-course-capacity" name="capacity" min="10" max="200" value="40" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-course-schedule">Weekly Lecture Schedule</label>
+              <input type="text" id="add-course-schedule" name="schedule" placeholder="Mon/Wed 14:00 - 15:30" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('add-course-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Enroll Student in Course Modal -->
+  <div class="modal-overlay" id="enroll-student-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Enroll Student in Course</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('enroll-student-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="enroll-student-form">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group col-span-2">
+              <label class="form-label" for="enroll-student-select">Select Candidate <span class="required">*</span></label>
+              <select id="enroll-student-select" name="student_id" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label" for="enroll-course-select">Select Course <span class="required">*</span></label>
+              <select id="enroll-course-select" name="course_id" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="enroll-grade">Initial Letter Grade</label>
+              <select id="enroll-grade" name="grade">
+                <option value="Pending">Pending / In Progress</option>
+                <option value="A">A (4.0)</option>
+                <option value="A-">A- (3.7)</option>
+                <option value="B+">B+ (3.3)</option>
+                <option value="B">B (3.0)</option>
+                <option value="B-">B- (2.7)</option>
+                <option value="C+">C+ (2.3)</option>
+                <option value="C">C (2.0)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="enroll-score">Percentage Score (0 - 100)</label>
+              <input type="number" id="enroll-score" name="score" min="0" max="100" value="88" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('enroll-student-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Enrollment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Add Announcement Modal -->
+  <div class="modal-overlay" id="add-announcement-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Publish Campus Announcement</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('add-announcement-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="add-announcement-form">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group col-span-2">
+              <label class="form-label" for="ann-title">Announcement Headline <span class="required">*</span></label>
+              <input type="text" id="ann-title" name="title" required placeholder="e.g. Fall 2026 Final Project Submission Guidelines" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ann-cat">Category</label>
+              <select id="ann-cat" name="category">
+                <option value="Academic">Academic</option>
+                <option value="Exam">Examination</option>
+                <option value="Event">Campus Event</option>
+                <option value="Notice">Notice</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ann-prio">Priority</label>
+              <select id="ann-prio" name="priority">
+                <option value="Normal">Normal</option>
+                <option value="Medium">Medium</option>
+                <option value="High">Urgent / High</option>
+              </select>
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label" for="ann-content">Bulletin Content <span class="required">*</span></label>
+              <textarea id="ann-content" name="content" rows="4" required placeholder="Details about schedules, links, or expectations..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('add-announcement-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Publish Announcement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Confirm Delete Modal -->
+  <div class="modal-overlay" id="confirm-delete-modal">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--accent-rose);">Confirm Permanent Deletion</h3>
+        <button class="modal-close-btn" onclick="UI.closeModal('confirm-delete-modal')" aria-label="Close modal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-delete-message" style="color: var(--text-main); font-size: 0.95rem;">
+          Are you sure you want to delete this record? This action cannot be reversed.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="UI.closeModal('confirm-delete-modal')">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete-btn">Permanently Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/students.js"></script>
+  <script src="js/courses.js"></script>
+  <script src="js/attendance.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
